@@ -97,7 +97,7 @@ export default function AddCronModal({ isOpen, onClose, onSave, initialData }: A
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto">
             <div className="w-full max-w-lg bg-slate-900 border border-slate-800 rounded-xl shadow-2xl animate-in fade-in zoom-in-95 duration-200">
                 <div className="flex items-center justify-between p-4 border-b border-slate-800">
                     <h2 className="text-lg font-semibold text-slate-200">
@@ -155,7 +155,7 @@ export default function AddCronModal({ isOpen, onClose, onSave, initialData }: A
                             />
                         </div>
                     ) : (
-                        <div className="grid grid-cols-5 gap-2">
+                        <div className="grid grid-cols-5 gap-1 sm:gap-2">
                             {[
                                 { label: "Minute", val: minute, set: setMinute },
                                 { label: "Hour", val: hour, set: setHour },

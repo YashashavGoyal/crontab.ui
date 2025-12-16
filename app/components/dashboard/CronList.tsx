@@ -41,8 +41,8 @@ export default function CronList({
     }
 
     return (
-        <div className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-6">
+        <div className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-2xl p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-2 sm:gap-0">
                 <h2 className="text-lg font-semibold text-slate-200">Active Schedules</h2>
                 <div className="text-xs font-mono text-slate-500">
                     {jobs.filter(j => j.status === 'running').length} running / {jobs.length} total

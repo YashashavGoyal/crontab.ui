@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CronList from "./CronList";
 import AddCronModal from "./AddCronModal";
 import DashboardHeader from "./DashboardHeader";
@@ -51,6 +51,34 @@ export default function CronDashboard() {
         };
         input.click();
     };
+
+    useEffect(() => {
+
+        if (isModalOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, [isModalOpen]);
+
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                setIsModalOpen(false);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [isModalOpen]);
 
     return (
         <div className="max-w-4xl mx-auto space-y-8">

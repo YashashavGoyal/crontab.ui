@@ -24,8 +24,8 @@ export default function CronJobRow({
     onEdit
 }: CronJobRowProps) {
     return (
-        <div className="flex items-center justify-between p-4 bg-slate-900/50 border border-slate-800 rounded-lg hover:border-slate-700 transition-colors group">
-            <div className="flex-1 min-w-0 mr-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-900/50 border border-slate-800 rounded-lg hover:border-slate-700 transition-colors group gap-4 sm:gap-0">
+            <div className="flex-1 min-w-0 w-full sm:mr-4">
                 <div className="flex items-center gap-2 mb-1">
                     <h3 className="text-sm font-medium text-slate-200 truncate">{job.name}</h3>
                     <span className={`px-2 py-0.5 text-[10px] rounded-full uppercase tracking-wider font-semibold ${job.status === 'running' ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' :
@@ -35,13 +35,13 @@ export default function CronJobRow({
                         {job.status}
                     </span>
                 </div>
-                <div className="flex items-center gap-4 text-xs font-mono text-slate-400">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 text-xs font-mono text-slate-400">
                     <span className="bg-slate-950 px-1.5 py-0.5 rounded text-indigo-400">{job.schedule}</span>
                     <span className="truncate opacity-70" title={job.command}>{job.command}</span>
                 </div>
             </div>
 
-            <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="flex items-center gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity self-end sm:self-auto">
                 {job.status !== 'running' && (
                     <button
                         onClick={() => onStatusChange(job.id, 'running')}
