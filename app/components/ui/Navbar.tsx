@@ -21,6 +21,7 @@ export default function Navbar() {
                     <div className="hidden md:flex items-center gap-8">
                         <NavLink href="/">Home</NavLink>
                         <NavLink href="/manage">Manage</NavLink>
+                        <NavLink href="/docs">Docs</NavLink>
                     </div>
 
                     <div className="flex items-center gap-4 z-50 relative">
@@ -59,6 +60,7 @@ export default function Navbar() {
                 <div className="flex flex-col gap-6">
                     <MobileNavLink href="/" onClick={() => setIsOpen(false)}>Home</MobileNavLink>
                     <MobileNavLink href="/manage" onClick={() => setIsOpen(false)}>Manage</MobileNavLink>
+                    <MobileNavLink href="/docs" onClick={() => setIsOpen(false)}>Docs</MobileNavLink>
                 </div>
 
                 <div className="mt-auto mb-12 border-t border-white/10 pt-8">

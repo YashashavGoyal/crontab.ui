@@ -28,6 +28,7 @@ export default function Footer() {
                         <ul className="space-y-2">
                             <FooterLink href="/">Cron Scheduler</FooterLink>
                             <FooterLink href="/manage">Manage Cron Jobs</FooterLink>
+                            <FooterLink href="/docs">Documentation</FooterLink>
                         </ul>
                     </div>
 
@@ -68,7 +69,7 @@ export default function Footer() {
                     </div>
                 </div>
 
-                {/* Bottom Bar */}
+
                 <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
                     <p className="text-slate-500 text-sm">
                         © {currentYear} Chronicle. All rights reserved.
