@@ -10,10 +10,7 @@ import { exportToJSON, exportToCrontab, parseImportFile } from "../../lib/cronIm
 
 export default function CronDashboard() {
 
-    const { jobs, addJob, updateJob, deleteJob, setStatus, setAllJobs } = useCronJobs([
-        { id: "1", name: "Daily Backup", schedule: "0 0 * * *", command: "pg_dump db > /backup/db.sql", status: "running" },
-        { id: "2", name: "Log Rotation", schedule: "0 0 1 * *", command: "logrotate /etc/logrotate.conf", status: "paused" },
-    ]);
+    const { jobs, addJob, updateJob, deleteJob, setStatus, setAllJobs } = useCronJobs();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingJob, setEditingJob] = useState<CronJob | null>(null);

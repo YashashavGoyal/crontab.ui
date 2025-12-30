@@ -1,8 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CronJob } from "../components/dashboard/CronJobRow";
+import { saveCron, loadCron } from "../lib/saveCron";
 
-export function useCronJobs(initialJobs: CronJob[] = []) {
-    const [jobs, setJobs] = useState<CronJob[]>(initialJobs);
+export function useCronJobs() {
+    const [jobs, setJobs] = useState<CronJob[]>([]);
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    useEffect(() => {
+        const initialJobs = loadCron();
+        setJobs(initialJobs);
+        setIsLoaded(true);
+    }, []);
+
+
+    useEffect(() => {
+        if (isLoaded) {
+            saveCron(jobs);
+        }
+    }, [jobs, isLoaded]);
 
     const addJob = (data: { name: string; schedule: string; command: string }) => {
         const newJob: CronJob = {
