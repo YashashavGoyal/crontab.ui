@@ -1,23 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CronJob } from "../components/dashboard/CronJobRow";
 import { saveCron, loadCron } from "../lib/saveCron";
 
 export function useCronJobs() {
     const [jobs, setJobs] = useState<CronJob[]>([]);
-    const [isLoaded, setIsLoaded] = useState(false);
+    const hasHydrated = useRef(false);
 
     useEffect(() => {
-        const initialJobs = loadCron();
-        setJobs(initialJobs);
-        setIsLoaded(true);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setJobs(loadCron());
+        hasHydrated.current = true;
     }, []);
 
-
     useEffect(() => {
-        if (isLoaded) {
-            saveCron(jobs);
-        }
-    }, [jobs, isLoaded]);
+        if (!hasHydrated.current) return;
+        saveCron(jobs);
+    }, [jobs]);
 
     const addJob = (data: { name: string; schedule: string; command: string }) => {
         const newJob: CronJob = {

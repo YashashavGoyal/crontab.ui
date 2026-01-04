@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, cache } from "react";
+import { useState } from "react";
 import CronParser from "cron-parser";
 import { X, Check } from "lucide-react";
 import { CronJob } from "./CronJobRow";
@@ -13,18 +13,24 @@ type AddCronModalProps = {
 };
 
 export default function AddCronModal({ isOpen, onClose, onSave, initialData }: AddCronModalProps) {
-    const [mode, setMode] = useState<"manual" | "raw">("manual");
-    const [name, setName] = useState("");
-    const [command, setCommand] = useState("");
-    const [rawSchedule, setRawSchedule] = useState("* * * * *");
+
+    const [mode, setMode] = useState<"manual" | "raw">(() => {
+        if (!initialData) return "manual";
+        const parts = initialData.schedule.split(" ");
+        return parts.length === 5 ? "manual" : "raw";
+    });
+
+    const [name, setName] = useState(initialData?.name || "");
+    const [command, setCommand] = useState(initialData?.command || "");
+    const [rawSchedule, setRawSchedule] = useState(initialData?.schedule || "* * * * *");
     const [isRawCorrect, setIsRawCorrect] = useState(true);
     const [isManualCorrect, setIsManualCorrect] = useState(true);
 
-    const [minute, setMinute] = useState("*");
-    const [hour, setHour] = useState("*");
-    const [dom, setDom] = useState("*");
-    const [month, setMonth] = useState("*");
-    const [dow, setDow] = useState("*");
+    const [minute, setMinute] = useState(() => initialData?.schedule.split(" ")[0] || "*");
+    const [hour, setHour] = useState(() => initialData?.schedule.split(" ")[1] || "*");
+    const [dom, setDom] = useState(() => initialData?.schedule.split(" ")[2] || "*");
+    const [month, setMonth] = useState(() => initialData?.schedule.split(" ")[3] || "*");
+    const [dow, setDow] = useState(() => initialData?.schedule.split(" ")[4] || "*");
 
 
     const validateRawSchedule = () => {
@@ -33,7 +39,7 @@ export default function AddCronModal({ isOpen, onClose, onSave, initialData }: A
             interval.next();
             setIsRawCorrect(true);
         }
-        catch (e) {
+        catch {
             setIsRawCorrect(false);
         }
     }
@@ -50,42 +56,10 @@ export default function AddCronModal({ isOpen, onClose, onSave, initialData }: A
             interval.next();
             setIsManualCorrect(true);
         }
-        catch (e) {
+        catch {
             setIsManualCorrect(false);
         }
     }
-
-    useEffect(() => {
-        if (initialData) {
-            setName(initialData.name);
-            setCommand(initialData.command);
-            setRawSchedule(initialData.schedule);
-
-            // Try to parse schedule for manual fields (simplified)
-            const parts = initialData.schedule.split(" ");
-            if (parts.length === 5) {
-                setMinute(parts[0]);
-                setHour(parts[1]);
-                setDom(parts[2]);
-                setMonth(parts[3]);
-                setDow(parts[4]);
-                setMode("manual");
-            } else {
-                setMode("raw");
-            }
-        } else {
-            // Reset defaults
-            setName("");
-            setCommand("");
-            setRawSchedule("* * * * *");
-            setMinute("*");
-            setHour("*");
-            setDom("*");
-            setMonth("*");
-            setDow("*");
-            setMode("manual");
-        }
-    }, [initialData, isOpen]);
 
     if (!isOpen) return null;
 

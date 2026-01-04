@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useMemo } from "react";
 import CronParser from "cron-parser";
 import { format } from "date-fns";
 import {
@@ -28,26 +28,22 @@ export default function Scheduler() {
     ];
 
     const [inputValue, setInputValue] = useState("*/5 * * * *");
-    const [cronExpression, setCronExpression] = useState("*/5 * * * *");
-    const [nextRuns, setNextRuns] = useState<Date[]>([]);
-    const [error, setError] = useState<string | null>(null);
     const [timezone, setTimezone] = useState<Timezone>("LOCAL");
-    const [isNaturalLang, setIsNaturalLang] = useState(false);
 
-    useEffect(() => {
+    const derivedData = useMemo(() => {
         if (!inputValue.trim()) {
-            setNextRuns([]);
-            setError(null);
-            setIsNaturalLang(false);
-            return;
+            return {
+                nextRuns: [],
+                error: null,
+                isNaturalLang: false,
+                cronExpression: inputValue
+            };
         }
 
         try {
             const nlResult = parseNaturalLanguage(inputValue);
             const expression = nlResult ?? inputValue;
-
-            setIsNaturalLang(Boolean(nlResult));
-            setCronExpression(expression);
+            const isNatural = Boolean(nlResult);
 
             const interval = CronParser.parse(expression, {
                 currentDate: new Date(),
@@ -61,13 +57,23 @@ export default function Scheduler() {
                 runs.push(interval.next().toDate());
             }
 
-            setNextRuns(runs);
-            setError(null);
+            return {
+                nextRuns: runs,
+                error: null,
+                isNaturalLang: isNatural,
+                cronExpression: expression
+            };
         } catch {
-            setNextRuns([]);
-            setError("Invalid Cron Expression");
+            return {
+                nextRuns: [],
+                error: "Invalid Cron Expression",
+                isNaturalLang: false,
+                cronExpression: inputValue
+            };
         }
     }, [inputValue, timezone]);
+
+    const { nextRuns, error, isNaturalLang, cronExpression } = derivedData;
 
     return (
         <div className="max-w-5xl mx-auto px-6 py-12 md:py-20 space-y-12 relative z-10">

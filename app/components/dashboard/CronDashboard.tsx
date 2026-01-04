@@ -37,13 +37,16 @@ export default function CronDashboard() {
         const input = document.createElement('input');
         input.type = 'file';
         input.accept = '.json,.txt,application/json,text/plain';
-        input.onchange = async (e: any) => {
-            const file = e.target.files[0];
+        input.onchange = async (e: Event) => {
+            const target = e.target as HTMLInputElement;
+            const file = target.files?.[0];
+            if (!file) return;
+
             try {
                 const newJobs = await parseImportFile(file);
                 setAllJobs(newJobs);
-            } catch (err: any) {
-                alert(err.message || "Failed to import jobs.");
+            } catch (err: unknown) {
+                alert((err as Error).message || "Failed to import jobs.");
             }
         };
         input.click();
@@ -95,12 +98,14 @@ export default function CronDashboard() {
                 onAddClick={handleAddClick}
             />
 
-            <AddCronModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                onSave={handleSaveJob}
-                initialData={editingJob}
-            />
+            {isModalOpen && (
+                <AddCronModal
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                    onSave={handleSaveJob}
+                    initialData={editingJob}
+                />
+            )}
         </div>
     );
 }

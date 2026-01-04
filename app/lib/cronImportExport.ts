@@ -35,7 +35,7 @@ export const parseImportFile = (file: File): Promise<CronJob[]> => {
                     resolve(imported);
                     return;
                 }
-            } catch (err) {
+            } catch {
                 // Not JSON, try line-by-line text parse
                 const lines = content.split('\n');
                 const newJobs: CronJob[] = [];

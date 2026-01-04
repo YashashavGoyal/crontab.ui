@@ -1,6 +1,6 @@
 "use client";
 
-import { Activity, Clock, FileJson, FileText, Upload, Plus, Terminal } from "lucide-react";
+import { Activity, Clock, Upload, Plus, Terminal } from "lucide-react";
 import Link from "next/link";
 
 export default function DocsPage() {
