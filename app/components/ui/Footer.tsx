@@ -1,4 +1,4 @@
-import { Clock } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Footer() {
@@ -10,8 +10,14 @@ export default function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
                     <div className="col-span-1 md:col-span-2 space-y-4">
                         <Link href="/" className="flex items-center gap-2 group w-fit">
-                            <div className="w-8 h-8 bg-gradient-to-tr from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-110 transition-transform duration-200">
-                                <Clock className="w-5 h-5 text-white" />
+                            <div className="w-10 h-10 flex items-center justify-center group-hover:scale-110 transition-transform duration-200 overflow-hidden">
+                                <Image
+                                    src="/logo.png"
+                                    alt="Chronicle Logo"
+                                    width={40}
+                                    height={40}
+                                    className="w-full h-full object-cover"
+                                />
                             </div>
                             <span className="font-bold text-xl tracking-tight text-white group-hover:text-indigo-200 transition-colors">
                                 Chronicle

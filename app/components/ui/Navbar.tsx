@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Clock } from "lucide-react";
+import Image from "next/image";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -12,8 +12,15 @@ export default function Navbar() {
             <nav className="fixed top-0 left-0 right-0 z-[101] border-b border-white/5 bg-slate-950/50 backdrop-blur-2xl supports-[backdrop-filter]:bg-slate-950/30">
                 <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-2 group z-50 relative">
-                        <div className="w-8 h-8 bg-gradient-to-tr from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-110 transition-transform duration-200">
-                            <Clock className="w-5 h-5 text-white" />
+                        <div className="w-10 h-10 flex items-center justify-center group-hover:scale-110 transition-transform duration-200 overflow-hidden">
+                            <Image
+                                src="/logo.png"
+                                alt="Chronicle Logo"
+                                width={40}
+                                height={40}
+                                sizes="any"
+                                className="w-full h-full object-cover"
+                            />
                         </div>
                         <span className="font-bold text-xl tracking-tight text-white group-hover:text-indigo-200 transition-colors">Chronicle</span>
                     </Link>
