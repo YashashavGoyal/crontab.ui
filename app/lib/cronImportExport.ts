@@ -1,5 +1,6 @@
 import { CronJob } from "../components/dashboard/CronJobRow";
 
+// Helper function to trigger a file download in the browser
 export const downloadFile = (content: string, filename: string, type: string) => {
     const dataStr = `data:${type};charset=utf-8,` + encodeURIComponent(content);
     const downloadAnchorNode = document.createElement('a');
@@ -10,10 +11,12 @@ export const downloadFile = (content: string, filename: string, type: string) =>
     downloadAnchorNode.remove();
 };
 
+// Exports the jobs list as a JSON file
 export const exportToJSON = (jobs: CronJob[]) => {
     downloadFile(JSON.stringify(jobs, null, 2), "cron_jobs.json", "text/json");
 };
 
+// Exports the jobs list as a Crontab formatted text file
 export const exportToCrontab = (jobs: CronJob[]) => {
     const textContent = jobs.map(j => {
         const statusComment = j.status !== 'running' ? `# [${j.status.toUpperCase()}] ` : '';
@@ -23,6 +26,7 @@ export const exportToCrontab = (jobs: CronJob[]) => {
     downloadFile(textContent, "crontab.txt", "text/plain");
 };
 
+// Parses an imported file (JSON or text) and returns a list of CronJobs
 export const parseImportFile = (file: File): Promise<CronJob[]> => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();

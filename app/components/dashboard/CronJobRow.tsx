@@ -2,6 +2,7 @@
 
 import { Play, Pause, Square, Trash2, Settings2 } from "lucide-react";
 
+// CronJob type
 export type CronJob = {
     id: string;
     name: string;
@@ -10,6 +11,7 @@ export type CronJob = {
     status: "running" | "paused" | "stopped";
 };
 
+// Props for the CronJobRow component
 type CronJobRowProps = {
     job: CronJob;
     onStatusChange: (id: string, status: CronJob["status"]) => void;
@@ -17,6 +19,7 @@ type CronJobRowProps = {
     onEdit: (job: CronJob) => void;
 };
 
+// CronJobRow component
 export default function CronJobRow({
     job,
     onStatusChange,

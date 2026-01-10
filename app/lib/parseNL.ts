@@ -1,4 +1,7 @@
 
+// Parses natural language input - Mimics cron expression
+// (e.g. "every 5 minutes") into a cron expression
+// Uses regex to match patterns and convert them to cron expressions
 export default function parseNaturalLanguage(input: string): string | null {
     const text = input.toLowerCase().trim();
 

@@ -5,6 +5,7 @@ import CronParser from "cron-parser";
 import { X, Check } from "lucide-react";
 import { CronJob } from "./CronJobRow";
 
+// Props for the AddCronModal component
 type AddCronModalProps = {
     isOpen: boolean;
     onClose: () => void;
@@ -12,14 +13,17 @@ type AddCronModalProps = {
     initialData?: CronJob | null;
 };
 
+// AddCronModal component
 export default function AddCronModal({ isOpen, onClose, onSave, initialData }: AddCronModalProps) {
 
+    // Modal state
     const [mode, setMode] = useState<"manual" | "raw">(() => {
         if (!initialData) return "manual";
         const parts = initialData.schedule.split(" ");
         return parts.length === 5 ? "manual" : "raw";
     });
 
+    // Form state
     const [name, setName] = useState(initialData?.name || "");
     const [command, setCommand] = useState(initialData?.command || "");
     const [rawSchedule, setRawSchedule] = useState(initialData?.schedule || "* * * * *");
@@ -33,6 +37,7 @@ export default function AddCronModal({ isOpen, onClose, onSave, initialData }: A
     const [dow, setDow] = useState(() => initialData?.schedule.split(" ")[4] || "*");
 
 
+    // Validation functions
     const validateRawSchedule = () => {
         try {
             const interval = CronParser.parse(rawSchedule);
@@ -63,6 +68,7 @@ export default function AddCronModal({ isOpen, onClose, onSave, initialData }: A
 
     if (!isOpen) return null;
 
+    // Form submission handler
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const schedule = mode === "raw" ? rawSchedule : `${minute} ${hour} ${dom} ${month} ${dow}`;

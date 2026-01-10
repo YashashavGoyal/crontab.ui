@@ -3,6 +3,7 @@
 import CronJobRow, { CronJob } from "./CronJobRow";
 import { Plus, Activity } from "lucide-react";
 
+// Props for the CronList component
 type CronListProps = {
     jobs: CronJob[];
     onStatusChange: (id: string, status: CronJob["status"]) => void;
@@ -11,6 +12,7 @@ type CronListProps = {
     onAddClick: () => void;
 };
 
+// CronList component
 export default function CronList({
     jobs,
     onStatusChange,

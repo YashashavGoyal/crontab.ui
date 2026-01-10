@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Plus, Download, Upload, Activity, FileJson, FileText, ChevronDown } from "lucide-react";
 
+// Props for the DashboardHeader
 type DashboardHeaderProps = {
     onImport: () => void;
     onExportJSON: () => void;
@@ -10,6 +11,7 @@ type DashboardHeaderProps = {
     onAddClick: () => void;
 };
 
+// DashboardHeader component
 export default function DashboardHeader({
     onImport,
     onExportJSON,

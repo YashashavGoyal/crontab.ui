@@ -10,11 +10,14 @@ import { exportToJSON, exportToCrontab, parseImportFile } from "../../lib/cronIm
 
 export default function CronDashboard() {
 
+    // Custom hook to manage cron jobs state
     const { jobs, addJob, updateJob, deleteJob, setStatus, setAllJobs } = useCronJobs();
 
+    // Modal Visibility and Job being edited
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingJob, setEditingJob] = useState<CronJob | null>(null);
 
+    // Handler to save a job (either add new or update existing)
     const handleSaveJob = (data: { name: string; schedule: string; command: string }) => {
         if (editingJob) {
             updateJob(editingJob.id, data);
@@ -23,16 +26,20 @@ export default function CronDashboard() {
         }
     };
 
+    // Opens the modal with data populated for editing an existing job
     const handleEditJob = (job: CronJob) => {
         setEditingJob(job);
         setIsModalOpen(true);
     };
 
+    // Opens the modal for adding a new job
     const handleAddClick = () => {
         setEditingJob(null);
         setIsModalOpen(true);
     };
 
+    // Handles file import for cron jobs 
+    // (supports JSON and text files)
     const handleImport = () => {
         const input = document.createElement('input');
         input.type = 'file';
@@ -43,6 +50,7 @@ export default function CronDashboard() {
             if (!file) return;
 
             try {
+                // Parse the imported file and update the state with new jobs
                 const newJobs = await parseImportFile(file);
                 setAllJobs(newJobs);
             } catch (err: unknown) {
@@ -52,6 +60,7 @@ export default function CronDashboard() {
         input.click();
     };
 
+    // Prevent body scrolling when the modal is open
     useEffect(() => {
 
         if (isModalOpen) {
@@ -66,6 +75,7 @@ export default function CronDashboard() {
     }, [isModalOpen]);
 
 
+    // Effect to close the modal when the Escape key is pressed
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Escape') {

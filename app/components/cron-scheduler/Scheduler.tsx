@@ -15,10 +15,13 @@ import {
 import parseNaturalLanguage from "../../lib/parseNL";
 
 
+// Scheduler component
 export default function Scheduler() {
 
+    // Type for timezone
     type Timezone = "UTC" | "LOCAL";
 
+    // Preset cron expressions
     const PRESETS = [
         { label: "Every Minute", value: "* * * * *" },
         { label: "Every 5 Min", value: "*/5 * * * *" },
@@ -27,9 +30,11 @@ export default function Scheduler() {
         { label: "Weekly (Sun)", value: "0 0 * * 0" },
     ];
 
+    // Input state
     const [inputValue, setInputValue] = useState("*/5 * * * *");
     const [timezone, setTimezone] = useState<Timezone>("LOCAL");
 
+    // Derived data
     const derivedData = useMemo(() => {
         if (!inputValue.trim()) {
             return {

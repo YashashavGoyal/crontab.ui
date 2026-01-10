@@ -1,3 +1,4 @@
+// Returns the base URL of the site
 export function getBaseUrl() {
     // To be used in production
     if (process.env.NEXT_PUBLIC_SITE_URL) {
