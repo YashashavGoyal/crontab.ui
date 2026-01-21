@@ -4,140 +4,132 @@
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
 
-![License](https://img.shields.io/github/license/YashashavGoyal/crontab.ui?style=for-the-badge)
-![GitHub stars](https://img.shields.io/github/stars/YashashavGoyal/crontab.ui?style=for-the-badge)
-![GitHub forks](https://img.shields.io/github/forks/YashashavGoyal/crontab.ui?style=for-the-badge)
-![GitHub issues](https://img.shields.io/github/issues/YashashavGoyal/crontab.ui?style=for-the-badge)
+Chronicle is a visual interface designed to simplify the creation, management, and for the visualisation of cron jobs for DevOps teams and System Administrators.
 
-Chronicle is a visual interface designed to simplify the creation, management, and deployment of cron jobs for DevOps teams and System Administrators.
-
-## 🔴 The Problem
-
-Managing cron jobs via the command line (`crontab -e`) is often error-prone and opaque. The cryptographic `* * * * *` syntax lacks readability, and there is no built-in validation or "single pane of glass" to monitor scheduled tasks across different environments. Chronicle solves this by treating Cron Jobs as visual objects with instant validation and easy management.
-
-## 🛠️ Tech Stack
-
-*   **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
-*   **Language**: [TypeScript](https://www.typescriptlang.org/)
-*   **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
-*   **Icons**: [Lucide React](https://lucide.dev/)
-*   **Utilities**: `cron-parser` for validation, `date-fns` for formatting.
-
-## 📂 Modular Code Structure
-
-```bash
-├── app/
-│   ├── (src)/               # Application Routes
-│   ├── components/
-│   │   ├── dashboard/       # Feature-specific components (Row, List)
-│   │   └── ui/              # Reusable Design System components
-│   ├── lib/
-│   │   ├── cronImportExport.ts # Import/Export logic
-│   │   └── saveCron.ts      # Persistence logic (LocalStorage)
-│   └── hooks/               # Logic: React Custom Hooks (useCronJobs)
-```
-
-## 🌊 Application Flow
-
-```mermaid
-graph TD
-    %% Nodes
-    User([👤 User / DevOps Engineer])
-    
-    subgraph "Chronicle UI"
-        direction TB
-        Dashboard[Dashboard Interface]
-        Editor[Job Editor & Validator]
-        Importer[File Importer]
-        Exporter[Crontab/JSON Generator]
-    end
-    
-    subgraph "Client Side"
-        Store[("💾 Local Storage")]
-    end
-    
-    %% Edges
-    User ==>|Manage Jobs| Dashboard
-    Dashboard -->|Create/Update| Editor
-    Editor -- "Validate" --> Editor
-    Editor -->|Save| Store
-    Store -.->|Hydrate| Dashboard
-    
-    User -->|Import| Importer
-    Importer -->|Populate| Dashboard
-    
-    Dashboard -->|Export| Exporter
-    Exporter -->|Download| User
-
-    %% Styling
-    classDef plain fill:#1a1a1a,stroke:#fff,color:#fff;
-    classDef highlight fill:#22226e,stroke:#f2f0f0,stroke-width:2px,color:#fff;
-    classDef secondary fill:#2d2d2d,stroke:#666,color:#eee;
-
-    class User plain;
-    class Dashboard,Editor,Importer,Exporter secondary;
-    class Store highlight;
-```
-
-## 🚀 Features
-
-*   **Visual Dashboard**: See all your jobs, their schedules, and commands in a clean table view.
-*   **Instant Validation**: Ensure your cron schedules are valid before saving.
-*   **Persistence**: Jobs are saved locally, so you don't lose your work on refresh.
-*   **Import/Export**: Easily migrate existing crontabs or backup your configuration.
-
-## 🔮 Product Scope
-
-*   **Firebase Integration**: Moving state to the cloud (Firestore) for persistent access across devices.
-*   **User Authentication**: Secure Login/Signup for team collaboration.
-*   **Role-Based Access**: Granular permissions for viewing vs. editing production jobs.
-*   **Server Sync**: Direct SSH integration to pull/push cron jobs to live servers.
-
-## ♾️ DevOps Integration Roadmap
-
-To professionalize the deployment pipeline, the following DevOps practices can be integrated:
-
-1.  **CI/CD Pipeline (GitHub Actions)**:
-    -   Automate linting (`npm run lint`) and type checking on every Pull Request.
-    -   Automatically deploy to Vercel Preview environments.
-
-2.  **Containerization (Docker)**:
-    -   Create a `Dockerfile` for self-hosted deployments.
-    -   Use multi-stage builds to keep the image size small.
-
-3.  **Testing Strategy**:
-    -   **Unit Tests**: Use **Jest** or **Vitest** to test the `lib` logic (validators).
-    -   **E2E Tests**: Use **Playwright** to verify the user flow.
-
-4.  **Monitoring**:
-    -   Use **Vercel Analytics** for performance metrics.
-
-## � Getting Started
-
-1.  **Clone the repository**:
-    ```bash
-    git clone https://github.com/YashashavGoyal/crontab.ui.git
-    cd crontab.ui
-    ```
-
-2.  **Install dependencies**:
-    ```bash
-    npm install
-    ```
-
-3.  **Run the development server**:
-    ```bash
-    npm run dev
-    ```
-
-4.  **Open locally**:
-    Visit [http://localhost:3000](http://localhost:3000) in your browser.
+**Live Application**: [Chronicle](https://chronicle-lake.vercel.app)  
+**Docker Hub**: [yashashavgoyal/chronicle](https://hub.docker.com/repository/docker/yashashavgoyal/chronicle/)
 
 ---
 
-**Author**: Yashashav Goyal
+## 🏗️ System Architecture
+
+Our production environment runs on **AWS EC2** instances, orchestrated via **Docker Compose**. We utilize a containerized architecture where each EC2 instance hosts a **reverse proxy (Nginx)** and multiple application containers (`chronicle`).
+
+### Logic
+1.  **AWS ALB (Application Load Balancer)**: Distributes incoming traffic across multiple EC2 instances.
+2.  **AWS EC2 Instances**: Each instance runs the application stack.
+3.  **Docker Compose Network**: Inside each EC2, we run:
+    -   **Nginx**: Listens on Host Port 80. Acts as a load balancer and reverse proxy for the internal app containers.
+    -   **App Containers (x2)**: Two replicas of the Next.js application (`chronicle-e1`, `chronicle-e2`) running on internal port 3000.
+4.  **Internal Routing**: Nginx routes traffic to the apps using Docker's internal DNS resolution (`http://chronicle-e1:3000` & `http://chronicle-e2:3000`).
+
+```mermaid
+flowchart TD
+    subgraph "AWS Cloud"
+        ALB[AWS Application Load Balancer]
+        
+        subgraph "EC2 Instance (n instances)"
+            direction TB
+            HostPort80[Host Port 80]
+            
+            subgraph "Docker Network"
+                Nginx[Nginx Container]
+                App1["App Container 1 (chronicle-e1)"]
+                App2["App Container 2 (chronicle-e2)"]
+            end
+        end
+    end
+
+    Internet(("User / Internet")) --> ALB
+    ALB -- "Traffic Distribution" --> HostPort80
+    HostPort80 --> Nginx
+    Nginx -- "Round Robin / Failover" --> App1
+    Nginx -- "Round Robin / Failover" --> App2
+```
+
+### Resource Map
+Below is the visualization of our AWS ALB Listener directing traffic to the Target Group containing our EC2 instances.
+
+![AWS ALB Resource Map](screenshots/AWS-ALB-Resource-Map.png)
+
+---
+
+## 🔄 CI/CD Pipeline
+
+We use **GitHub Actions** for a complete Continuous Integration and Continuous Deployment pipeline.
+
+### Pipeline Workflow (`test-build-deploy.yaml`)
+
+1.  **Test**: Runs `npm run lint` to ensure code quality.
+2.  **Build & Push**:
+    -   Builds a multi-stage Docker image.
+    -   Injects **Build Args** (e.g., `NEXT_PUBLIC_SITE_URL`) during the build process to bake environment-specific configurations into the static assets.
+    -   Pushes the image to Docker Hub with tags: `latest`, `short-sha`, and `semver` (if tagged).
+3.  **Deploy**:
+    -   **Dynamic Discovery**: Uses AWS CLI to find all running EC2 instances with the tag `app: chronicle`.
+    -   **SSH & Update**: SSHs into each identified instance, pulls the new configuration/scripts, and executes the deployment script.
+
+![GitHub Action Workflow](screenshots/Github-Action-Worflows.png)
+
+### Build Arguments
+We utilize Docker `ARG` to pass build-time variables like `NEXT_PUBLIC_SITE_URL`. This allows our Next.js application to be aware of its environment (Production vs Staging) at build time, optimizing the static generation process.
+
+---
+
+## ✅ Runtime Verification
+
+### Deployment Success
+Verification that the GitHub Action pipeline successfully executed and deployed the application.
+
+### Container Status (EC2)
+A view from the terminal (tmux) of our EC2 instances showing `docker ps`. You can see the **Nginx** container and the **two App containers** up and running.
+
+![EC2 Docker Process Status](screenshots/Tmux-EC2-Shows-Docker-ps.png)
+
+### Live Access
+The application is accessible via the AWS ALB DNS, confirming the entire networking stack (ALB -> Target Group -> EC2 -> Nginx -> App) is healthy.
+
+![Chronicle Live on ALB](screenshots/Chronicle-Home-From-ALB-DNS.png)
+
+---
+
+## 🚀 Deployment Strategy
+
+We employ a **Pull-Based Deployment with Central orchestration**:
+
+1.  **Push to Code**: Developer pushes to `main`.
+2.  **CI Trigger**: GitHub Actions starts the pipeline.
+3.  **Artifact Creation**: Docker image is built and pushed to the registry.
+4.  **Orchestrator**: The GitHub Action runner acts as the orchestrator.
+    -   It queries AWS API: *"Give me the IPs of all servers tagged `app: chronicle`"*
+    -   It iterates through the list and triggers the update on each server.
+5.  **Node Update**: On the EC2 node, a script copies the latest `docker-compose.yaml` and restarts the containers using the new image tag.
+
+This allows us to scale simply by launching more EC2 instances with the correct tag, without changing our deployment pipeline configuration.
+
+---
+
+## 🛠️ Tech Stack & Links
+
+*   **Framework**: [Next.js 15](https://nextjs.org/)
+*   **Container**: [Docker](https://www.docker.com/)
+*   **Orchestration**: Docker Compose
+*   **Reverse Proxy**: Nginx
+*   **Cloud**: AWS (EC2, ALB)
+*   **CI/CD**: GitHub Actions
+
+### Important Links
+*   [GitHub Repository](https://github.com/YashashavGoyal/crontab.ui)
+*   [Docker Hub Repository](https://hub.docker.com/repository/docker/yashashavgoyal/chronicle/)
+
+---
+
+## 👤 Author
+
+**Yashashav Goyal**
 
 <a href="https://github.com/YashashavGoyal">
   <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
@@ -149,4 +141,6 @@ To professionalize the deployment pipeline, the following DevOps practices can b
   <img src="https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter" />
 </a>
 
-**License**: MIT
+## 📄 License
+
+This project is licensed under the **MIT License**.

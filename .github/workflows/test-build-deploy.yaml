@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+
     tags:
       - "v*"
 
@@ -109,6 +110,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Configure aws-cli
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -116,6 +118,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      # dynamically fetch public-ipv4 of all ec2 tagged {app: chronicle}
       - name: Discover EC2 instances dynamically
         run: |
           EC2_IPS=$(aws ec2 describe-instances \
@@ -126,6 +129,7 @@ jobs:
 
           echo "EC2_IPS=$EC2_IPS" >> $GITHUB_ENV
 
+      # Configure ssh to all ipv4 fetched by aws-cli
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
@@ -133,6 +137,8 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H $EC2_IPS >> ~/.ssh/known_hosts
 
+      # Deploy to all ipv4 fetched by aws-cli
+      # One by One
       - name: Deploy to EC2
         run: |
           for EC2 in $EC2_IPS; do
