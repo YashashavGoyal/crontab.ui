@@ -3,9 +3,6 @@ name: Chronicle CI/CD - Test Build Deploy
 # Event when to trigger
 on:
   push:
-    branches:
-      - main
-
     tags:
       - "v*"
 
